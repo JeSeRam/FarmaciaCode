@@ -1,0 +1,492 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package PROYECTO.ADMON.Perfil;
+
+import Clases.Sesion;
+import Entidades.ClsPantalla;
+import Entidades.ClsUsuario;
+import Funcionalidades.ClsOperaPantalla;
+import Funcionalidades.ClsOperaUsuario;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+/**
+ *
+ * @author Freak
+ */
+public class FRMAlta extends javax.swing.JInternalFrame {
+
+    /**
+     * Creates new form FRMAlta
+     */
+    public FRMAlta(){
+        initComponents();
+        DefaultTableModel modelo = (DefaultTableModel) tblPantallaEmpleado.getModel();
+        modelo.addTableModelListener((javax.swing.event.TableModelEvent tme) -> {
+            tableChangedEvent(tme);
+        });
+        DefaultTableModel modelo2 = (DefaultTableModel) tblPantallaAdmin.getModel();
+        modelo2.addTableModelListener((javax.swing.event.TableModelEvent tme) -> {
+            tableChangedEvent(tme);
+        });
+    }
+    private Object[][] CargaUsuariosEnTabla() {
+        String Filtro = "usu_num_usuario not in (select distinct(asp_num_usuario) from viasignaperfil)";
+        List<ClsUsuario> lstUsuario = (new ClsOperaUsuario()).ConsultaLista("", "", "", Filtro);
+        Object Usuarios[][] = new Object[lstUsuario.size()][ClsUsuario.RelacionesUsuario.CamposQueSeMuestranEnTabla.size() + 1];
+        int Cont = 0 ;
+        try{
+        for (int x = 0; x < lstUsuario.size(); x++){
+            Cont = 0 ;
+            for (int y = 0; y < ClsUsuario.RelacionesUsuario.CamposQueSeMuestranEnTabla.size() + 1; y ++){
+                if( y == 0){
+                    Usuarios[x][y] = false;
+                }else{
+                    Method getElemento = lstUsuario.get(x).getClass().getMethod(ClsUsuario.RelacionesUsuario.CamposQueSeMuestranEnTabla.get(Cont).Entidad());
+                    Usuarios[x][y] = getElemento.invoke(lstUsuario.get(x));
+                    Cont++;
+                }
+            }
+        }
+        }catch(Exception ex){
+            System.out.println(ex.getMessage().toString());
+        }
+        return Usuarios;
+    }
+    private Object[][] CargaPantallasEnTabla(int CveTipoMenu) {
+        List<ClsPantalla> lstPantalla = (new ClsOperaPantalla()).ConsultaLista("", "",""+CveTipoMenu, "");
+        Object Pantallas[][] = new Object[lstPantalla.size()][ClsPantalla.RelacionesPantalla.CamposQueSeMuestranEnTabla.size() + 1];
+        int Cont = 0 ;
+        try{
+        for (int x = 0; x < lstPantalla.size(); x++){
+            Cont = 0 ;
+            for (int y = 0; y < ClsPantalla.RelacionesPantalla.CamposQueSeMuestranEnTabla.size() + 1; y ++){
+                if( y == 0){
+                    Pantallas[x][y] = false;
+                }else{
+                    Method getElemento = lstPantalla.get(x).getClass().getMethod(ClsPantalla.RelacionesPantalla.CamposQueSeMuestranEnTabla.get(Cont).Entidad());
+                    Pantallas[x][y] = getElemento.invoke(lstPantalla.get(x));
+                    Cont++;
+                }
+            }
+        }
+        }catch(Exception ex){
+            System.out.println(ex.getMessage().toString());
+        }
+        return Pantallas;
+    }
+    private String[] Titulos(int TipoTabla){
+        String Titulos[] = null;
+        int Cont = 0 ;
+        switch(TipoTabla){
+            case 1:
+                Titulos = new String[ClsUsuario.RelacionesUsuario.CamposQueSeMuestranEnTabla.size() + 1];
+                Cont = 0 ;
+                for (int i = 0; i < ClsUsuario.RelacionesUsuario.CamposQueSeMuestranEnTabla.size() + 1; i++){
+                    if (i == 0){
+                        Titulos[i] = "Asignar";
+                    }else{
+                        Titulos[i] = ClsUsuario.RelacionesUsuario.CamposQueSeMuestranEnTabla.get(Cont).Texto();
+                        Cont++;
+                    }
+                }
+                break;
+            case 2:
+                Titulos = new String[ClsPantalla.RelacionesPantalla.CamposQueSeMuestranEnTabla.size() + 1];
+                Cont = 0 ;
+                for (int i = 0; i < ClsPantalla.RelacionesPantalla.CamposQueSeMuestranEnTabla.size() + 1; i++){
+                    if (i == 0){
+                        Titulos[i] = "Asignar";
+                    }else{
+                        Titulos[i] = ClsPantalla.RelacionesPantalla.CamposQueSeMuestranEnTabla.get(Cont).Texto();
+                        Cont++;
+                    }
+                }
+                break;
+        }
+        return Titulos;
+    }
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jpnBase = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
+        txtNombreDePerfil = new javax.swing.JTextField();
+        lblNombreDePerfil = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblUsuarios = new javax.swing.JTable();
+        btnGuardar = new javax.swing.JButton();
+        lblUsuarios = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        lblPantallaEmpleado = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblPantallaEmpleado = new javax.swing.JTable();
+        jSeparator3 = new javax.swing.JSeparator();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblPantallaAdmin = new javax.swing.JTable();
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(jTable1);
+
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        setTitle("Alta de Perfil");
+        setToolTipText("");
+        setAutoscrolls(true);
+        setMinimumSize(new java.awt.Dimension(122, 34));
+        setNormalBounds(new java.awt.Rectangle(0, 0, 122, 0));
+        setPreferredSize(new java.awt.Dimension(1315, 1026));
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
+
+        lblTitulo.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
+        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitulo.setText(Glosario.Glosario.Perfil.FRMAlta_getTitulo());
+
+        lblNombreDePerfil.setText(Glosario.Glosario.Perfil.Perfil_NombreDePerfil());
+
+        tblUsuarios.setModel(new javax.swing.table.DefaultTableModel(
+            CargaUsuariosEnTabla(),
+            Titulos(1)
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.Long.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        if (tblUsuarios.getColumnModel().getColumnCount() > 0) {
+            tblUsuarios.getColumnModel().getColumn(0).setResizable(false);
+            tblUsuarios.getColumnModel().getColumn(0).setPreferredWidth(5);
+        }
+        jScrollPane1.setViewportView(tblUsuarios);
+
+        btnGuardar.setText(Glosario.Glosario.getGuardar());
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        lblUsuarios.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblUsuarios.setText(Glosario.Glosario.Usuario.Usuario_getTitulo());
+
+        lblPantallaEmpleado.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblPantallaEmpleado.setText(Glosario.Glosario.Pantalla.Pantalla_getTituloEmpleado());
+
+        tblPantallaEmpleado.setModel(new javax.swing.table.DefaultTableModel(
+            CargaPantallasEnTabla(1),
+            Titulos(2)
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.Long.class, java.lang.String.class, java.lang.Long.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        if (tblPantallaEmpleado.getColumnModel().getColumnCount() > 0) {
+            tblPantallaEmpleado.getColumnModel().getColumn(0).setResizable(false);
+            tblPantallaEmpleado.getColumnModel().getColumn(0).setPreferredWidth(5);
+        }
+        jScrollPane4.setViewportView(tblPantallaEmpleado);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setText(Glosario.Glosario.Pantalla.Pantalla_getTituloAdministrador());
+
+        tblPantallaAdmin.setModel(new javax.swing.table.DefaultTableModel(
+            CargaPantallasEnTabla(2),
+            Titulos(2)
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.Long.class, java.lang.String.class, java.lang.Long.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        if (tblPantallaAdmin.getColumnModel().getColumnCount() > 0) {
+            tblPantallaAdmin.getColumnModel().getColumn(0).setResizable(false);
+            tblPantallaAdmin.getColumnModel().getColumn(0).setPreferredWidth(5);
+        }
+        jScrollPane5.setViewportView(tblPantallaAdmin);
+
+        javax.swing.GroupLayout jpnBaseLayout = new javax.swing.GroupLayout(jpnBase);
+        jpnBase.setLayout(jpnBaseLayout);
+        jpnBaseLayout.setHorizontalGroup(
+            jpnBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpnBaseLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jpnBaseLayout.createSequentialGroup()
+                .addGap(280, 280, 280)
+                .addComponent(lblNombreDePerfil)
+                .addGap(107, 107, 107)
+                .addComponent(txtNombreDePerfil, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
+                .addGap(288, 288, 288))
+            .addGroup(jpnBaseLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+            .addGroup(jpnBaseLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpnBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1)
+                    .addGroup(jpnBaseLayout.createSequentialGroup()
+                        .addGroup(jpnBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblUsuarios)
+                            .addComponent(lblPantallaEmpleado)
+                            .addComponent(btnGuardar)
+                            .addComponent(jLabel1))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(jpnBaseLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator2)
+                .addContainerGap())
+            .addGroup(jpnBaseLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4)
+                .addContainerGap())
+            .addGroup(jpnBaseLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator3)
+                .addContainerGap())
+            .addGroup(jpnBaseLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5)
+                .addContainerGap())
+        );
+        jpnBaseLayout.setVerticalGroup(
+            jpnBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpnBaseLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitulo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jpnBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNombreDePerfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNombreDePerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblUsuarios)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblPantallaEmpleado)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnGuardar)
+                .addContainerGap())
+        );
+
+        jScrollPane2.setViewportView(jpnBase);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 992, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+        if (Sesion.CierreVentana(NumeroDePantalla)){
+            this.dispose();
+        }
+    }//GEN-LAST:event_formInternalFrameClosing
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+        int seleccion = tblUsuarios.getRowCount();
+        int columnas = tblUsuarios.getColumnCount();
+        for (int row = 0;row < seleccion;row++){
+            if ((boolean) (tblUsuarios.getValueAt(row, 0)) == true){
+                for (int col = 0; col < columnas; col++){
+                    System.out.print(" | " + tblUsuarios.getValueAt(row, col));
+                }
+                DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
+                modelo.removeRow(row);
+            }
+            System.out.print(" | ");
+            System.out.println();
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+    private void tableChangedEvent(javax.swing.event.TableModelEvent tme) {
+        int row = tme.getFirstRow();
+        int column = tme.getColumn();
+        TableModel model = (TableModel) tme.getSource();
+        Boolean checked = (Boolean) model.getValueAt(row, column);
+        if (checked) {
+            long NumeroDePantalla = (long) model.getValueAt(row, 1);
+            long NumeroDePantallaHija = (long) model.getValueAt(row, 3);
+            if(NumeroDePantallaHija != 0){
+                for(int i = 0; i < model.getRowCount();i++){
+                    if((long) model.getValueAt(i, 1) == NumeroDePantalla && (long) model.getValueAt(i, 3) == 0){
+                        model.setValueAt(true, i, 0);
+                    }
+                }
+            }else{
+            }
+        }else{
+            boolean Asignar = (boolean) model.getValueAt(row,column);
+            if (!Asignar){
+                List<Integer> Posicion = new ArrayList<Integer>();
+                long NumeroDePantalla = (long) model.getValueAt(row, 1);
+                long NumeroDePantallaHija = (long) model.getValueAt(row, 3);
+                if (NumeroDePantallaHija == 0){
+                    for(int i = 0; i < model.getRowCount();i++){
+                        if((long) model.getValueAt(i, 1) == NumeroDePantalla && (long) model.getValueAt(i, 3) != 0 && (boolean) model.getValueAt(i, 0) == true){
+                            Posicion.add(i);
+                        }
+                    }
+                    if (Posicion.size() !=0){
+                        int respuesta=JOptionPane.showConfirmDialog(null, "Si se quita este elemento serán removidas las pantallas dependientes ¿Desea continuar?");
+                        if(JOptionPane.OK_OPTION==respuesta){
+                            for(int i = 0; i < Posicion.size();i++){
+                                model.setValueAt(false, Posicion.get(i), 0);
+                            } 
+                        }else{
+                            for(int i = 0; i < Posicion.size();i++){
+                                model.setValueAt(true, Posicion.get(i), 0);
+                            }
+                        }
+                    }
+                }else{
+                    boolean Estatus = false;
+                    for(int i = 0; i < model.getRowCount();i++){
+                        if((long) model.getValueAt(i, 1) == NumeroDePantalla && (long) model.getValueAt(i, 3) == 0 && (boolean) model.getValueAt(i, 0) == false){
+                            Estatus = true;
+                            break;
+                        }
+                    }
+                    if (Estatus){
+                        for(int i = 0; i < model.getRowCount();i++){
+                            if((long) model.getValueAt(i, 1) == NumeroDePantalla && (long) model.getValueAt(i, 3) != 0 && (boolean) model.getValueAt(i, 0) == true){
+                                Posicion.add(i);
+                            }
+                        }
+                        if (Posicion.size() !=0){
+                            for(int i = 0; i < Posicion.size();i++){
+                                model.setValueAt(false, Posicion.get(i), 0);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public long NumeroDePantalla(){
+        return NumeroDePantalla;
+    }
+    private long NumeroDePantalla = 6;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JPanel jpnBase;
+    private javax.swing.JLabel lblNombreDePerfil;
+    private javax.swing.JLabel lblPantallaEmpleado;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblUsuarios;
+    private javax.swing.JTable tblPantallaAdmin;
+    private javax.swing.JTable tblPantallaEmpleado;
+    private javax.swing.JTable tblUsuarios;
+    private javax.swing.JTextField txtNombreDePerfil;
+    // End of variables declaration//GEN-END:variables
+}
