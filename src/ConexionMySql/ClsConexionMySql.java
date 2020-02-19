@@ -24,7 +24,8 @@ import java.util.List;
  */
 public class ClsConexionMySql {
     // <editor-fold defaultstate="collapsed" desc="Constructor">
-    public ClsConexionMySql(String NombreDeUsuario,String Contraseña,String NombreDeBase,String NombreDeBasePrebia){
+    public ClsConexionMySql(String Servidor,String NombreDeUsuario,String Contraseña,String NombreDeBase,String NombreDeBasePrebia){
+        _Servidor = Servidor;
         _NombreDeUsuario = NombreDeUsuario;
         _Contraseña = Contraseña;
         _NombreDeBase = NombreDeBase;
@@ -33,7 +34,7 @@ public class ClsConexionMySql {
     public ClsConexionMySql() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            _Conexion = DriverManager.getConnection("jdbc:mysql://localhost/" + _NombreDeBase, _NombreDeUsuario, _Contraseña);
+            _Conexion = DriverManager.getConnection("jdbc:mysql://" + _Servidor + "/" + _NombreDeBase, _NombreDeUsuario, _Contraseña);
             MensajeError.Estatus(true);
             MensajeError.NumeroDePantalla(1);
             MensajeError.Funcionalidad(1);
@@ -51,6 +52,7 @@ public class ClsConexionMySql {
             MensajeError.Funcionalidad(1);
             MensajeError.CodigoDeError(sqle.getErrorCode());
             MensajeError.Mensaje(sqle.getMessage());
+            
         } catch (Exception e) {
             MensajeError.Estatus(false);
             MensajeError.NumeroDePantalla(1);
@@ -159,7 +161,7 @@ public class ClsConexionMySql {
             List<ClsEstructura> ArregloRelaciones = CreaListaDeTablas();
             ClsRelacion[] Estructura;
             Class.forName("com.mysql.jdbc.Driver");
-            _Conexion = DriverManager.getConnection("jdbc:mysql://localhost/" + _NombreDeBasePrebia, _NombreDeUsuario, _Contraseña);
+            _Conexion = DriverManager.getConnection("jdbc:mysql://" + _Servidor + "/" + _NombreDeBasePrebia, _NombreDeUsuario, _Contraseña);
             String[] CreaBase= new String[ArregloRelaciones.size() + 2 + (ArregloRelaciones.size() * 2)];
             // Crea Base de datos y la usa
             CreaBase[0] = "CREATE DATABASE " + _NombreDeBase;
@@ -368,8 +370,9 @@ public class ClsConexionMySql {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Declaracion de variables">
     private static Connection _Conexion = null;
-    private String _NombreDeUsuario = "root";
-    private String _Contraseña = "123ser__";
+    private String _Servidor = "JeSeRamCorp";
+    private String _NombreDeUsuario = "Aplicativo";
+    private String _Contraseña = "12345";
     private String _NombreDeBase = "ADMON";
     private String _NombreDeBasePrebia = "sys";
     private Clases.ClsMensajeError MensajeError = new Clases.ClsMensajeError();

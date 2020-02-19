@@ -24,7 +24,7 @@ public class FRMInstalacion extends javax.swing.JFrame {
      */
     public FRMInstalacion() {
         Conexion = new ClsConexionMySql();
-        //Conexion.CreaDB();
+        Conexion.CreaDB();
         Clases.ClsMensajeError RegEstatus = Conexion.RegresaEstatus();
         if(RegEstatus.Estatus()){
             if (!Conexion.Consulta("select * from " + Entidades.ClsClave.RelacionesClave.Tabla.NombreTabla()).TieneRegistros()){
@@ -189,7 +189,7 @@ public class FRMInstalacion extends javax.swing.JFrame {
     }
     private long NumeroDePantalla = 0;
     private static Clases.ClsMensajeError  MensajeError = new Clases.ClsMensajeError();
-    private static ClsConexionMySql Conexion = new ClsConexionMySql("root","123ser__","ADMON","sys");
+    private static ClsConexionMySql Conexion = new ClsConexionMySql("JeSeRamCorp","Aplicativo","12345","ADMON","sys");
     private Timer Tiempo;
     private static boolean Estatus = true;
     private List<String> Registros;

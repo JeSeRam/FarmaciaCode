@@ -40,7 +40,9 @@ public class ClsResultSet {
                 estatus = false;
             }
         }catch(SQLException sqle){
-            
+                estatus = false;
+        }catch(Exception ex){
+                estatus = false;
         }
         return estatus;
     }

@@ -129,8 +129,8 @@ public class ClsSequence implements ISquence{
         public static ClsRelacion Valor = new ClsRelacion("Valor", "sqe_val_inicial", "Valor Inicial","bigint","20","0","NOT NULL DEFAULT 1","Valor Inicial");
         public static ClsRelacion Ciclo = new ClsRelacion("Ciclo", "sqe_ciclo", "Ciclo","boolean","","","NOT NULL DEFAULT FALSE","Ciclo");
         public static ClsRelacion[] Estructura = {NombreDeSequencia,Incrementar,ValorMinimo,ValorMaximo,Valor,Ciclo};
-        public static String SqlVista = "CREATE FUNCTION " + Tabla.NombreVista()+ " (F_" + NombreDeSequencia.Campo() + " varchar(" + NombreDeSequencia.Capacidad() + ")) " +
-                "RETURNS bigint NOT DETERMINISTIC " +
+        public static String SqlVista = "CREATE FUNCTION `" + Tabla.NombreVista()+ "` (F_" + NombreDeSequencia.Campo() + " varchar(" + NombreDeSequencia.Capacidad() + ")) " +
+                "RETURNS bigint DETERMINISTIC " +
                 "BEGIN " +
                 "DECLARE F_" + Valor.Campo() + " bigint; " +
                 "SELECT " + Valor.Campo() + " INTO F_" + Valor.Campo() + " FROM " + Tabla.NombreTabla() + " " +
@@ -142,7 +142,7 @@ public class ClsSequence implements ISquence{
                 Valor.Campo() + " + " + Incrementar.Campo() + ") WHERE " + NombreDeSequencia.Campo() + " = F_" + NombreDeSequencia.Campo() + ";" +
                 "END IF;" +
                 "RETURN F_" + Valor.Campo() + ";" +
-                "END;";
+                "END;;";
             public static String Index = "CREATE UNIQUE INDEX PK_" +Tabla.NombreTabla() + " ON " 
                 + Tabla.NombreTabla() + " (" + NombreDeSequencia.Campo() + ")";
     }
