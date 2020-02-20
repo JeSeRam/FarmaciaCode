@@ -24,7 +24,7 @@ public class FRMInstalacion extends javax.swing.JFrame {
      */
     public FRMInstalacion() {
         Conexion = new ClsConexionMySql();
-        Conexion.CreaDB();
+        //Conexion.CreaDB();
         Clases.ClsMensajeError RegEstatus = Conexion.RegresaEstatus();
         if(RegEstatus.Estatus()){
             if (!Conexion.Consulta("select * from " + Entidades.ClsClave.RelacionesClave.Tabla.NombreTabla()).TieneRegistros()){
