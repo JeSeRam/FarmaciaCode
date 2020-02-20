@@ -34,7 +34,7 @@ public class ClsConexionMySql {
     public ClsConexionMySql() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            _Conexion = DriverManager.getConnection("jdbc:mysql://" + _Servidor + "/" + _NombreDeBase, _NombreDeUsuario, _Contraseña);
+            _Conexion = DriverManager.getConnection("jdbc:mysql://" + _Servidor + "/" + _NombreDeBase + "?useSSL=false", _NombreDeUsuario, _Contraseña);
             MensajeError.Estatus(true);
             MensajeError.NumeroDePantalla(1);
             MensajeError.Funcionalidad(1);
@@ -161,7 +161,7 @@ public class ClsConexionMySql {
             List<ClsEstructura> ArregloRelaciones = CreaListaDeTablas();
             ClsRelacion[] Estructura;
             Class.forName("com.mysql.jdbc.Driver");
-            _Conexion = DriverManager.getConnection("jdbc:mysql://" + _Servidor + "/" + _NombreDeBasePrebia, _NombreDeUsuario, _Contraseña);
+            _Conexion = DriverManager.getConnection("jdbc:mysql://" + _Servidor + "/" + _NombreDeBasePrebia + "?useSSL=false", _NombreDeUsuario, _Contraseña);
             String[] CreaBase= new String[ArregloRelaciones.size() + 2 + (ArregloRelaciones.size() * 2)];
             // Crea Base de datos y la usa
             CreaBase[0] = "CREATE DATABASE " + _NombreDeBase;
