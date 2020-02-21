@@ -38,6 +38,15 @@ public class Glosario {
     public static String getAdministrador(){
         return "ADMINISTRADOR";
     }
+    public static String getServidor(){
+        return "SERVIDOR";
+    }
+    public static String getNombreDeBaseDeDatos(){
+        return "BASE DE DATOS";
+    }
+    public static String getCrearBaseDeDatos(){
+        return "CONTINUAR INSTALACIÓN";
+    }
     public static String FRMInstalacion_getCreaDB(){
         return "Creando Base de Datos para el sistema, esto puede tardar unos minutos.";
     }

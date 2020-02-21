@@ -9,6 +9,7 @@ import ConexionMySql.ClsConexionMySql;
 import PROYECTO.LOGIN.FRMLogin;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -23,24 +24,28 @@ public class FRMInstalacion extends javax.swing.JFrame {
      * Creates new form FRMInstalacion
      */
     public FRMInstalacion() {
-        Conexion = new ClsConexionMySql();
-        //Conexion.CreaDB();
-        Clases.ClsMensajeError RegEstatus = Conexion.RegresaEstatus();
-        if(RegEstatus.Estatus()){
-            if (!Conexion.Consulta("select * from " + Entidades.ClsClave.RelacionesClave.Tabla.NombreTabla()).TieneRegistros()){
-                Registros = Conexion.CreaRegistros();
-                initComponents();
-                Tiempo = new Timer(500, new progreso());
-                Tiempo.start();
+        if (!Clases.ClsManejadorDeArchivos.ExisteArchivo(System.getProperty("user.dir") + "/src/Content/AppData/Key.lbl")){
+            Conexion = new ClsConexionMySql(true);
+            Registros = Conexion.CreaEstructuraDB();
+            Registros.addAll(Conexion.CreaRegistros());
+            initComponents();
+        } else {
+            Conexion = new ClsConexionMySql();
+            Clases.ClsMensajeError RegEstatus = Conexion.RegresaEstatus();
+            if(RegEstatus.Estatus()){
+                if (!Conexion.Consulta("select * from " + Entidades.ClsClave.RelacionesClave.Tabla.NombreTabla()).TieneRegistros()){
+                    JOptionPane.showMessageDialog(this, "No es posible realizar consultas a la base de datos",
+                    "Error en conexion", JOptionPane.ERROR_MESSAGE);
+                }else{
+                    Estatus = false;
+                    this.dispose();
+                    FRMLogin Login = new FRMLogin();
+                    Login.setVisible(true);
+                }
             }else{
-                Estatus = false;
-                this.dispose();
-                FRMLogin Login = new FRMLogin();
-                Login.setVisible(true);
+                JOptionPane.showMessageDialog(this, RegEstatus.Mensaje(),
+                    "Error en conexion", JOptionPane.ERROR_MESSAGE);
             }
-        }else{
-            JOptionPane.showMessageDialog(this, RegEstatus.Mensaje(),
-                "Error en conexion", JOptionPane.ERROR_MESSAGE);
         }
     }
     public void actionPerformed(ActionEvent e) { 
@@ -54,14 +59,15 @@ public class FRMInstalacion extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent ae) {
             int n = pgbBaseDeDatos.getValue();
             if(n < Registros.size()){
-                if (Conexion.Transaccion(Registros.get(n))){
+                if (Conexion.CreaDB(Registros.get(n))){
                     n++;
                     pgbBaseDeDatos.setValue(n);
                 }else{
                     Tiempo.stop();
-                    JOptionPane.showMessageDialog(null, "Error de carga");
+                    Clases.ClsMensajeError RegEstatus = Conexion.RegresaEstatus();
+                    JOptionPane.showMessageDialog(null, RegEstatus.Mensaje());
                 }
-            }else if (n >= Registros.size() && n < 100){
+            }else if (n >= Registros.size() && n < 200){
                 n++;
                 pgbBaseDeDatos.setValue(n);
             }else {
@@ -82,15 +88,25 @@ public class FRMInstalacion extends javax.swing.JFrame {
     private void initComponents() {
 
         pgbBaseDeDatos = new javax.swing.JProgressBar();
-        txtTextoInformativo = new javax.swing.JLabel();
+        lblTextoInformativo = new javax.swing.JLabel();
         txtLoginTitle = new javax.swing.JLabel();
         btnSiguiente = new javax.swing.JButton();
+        lblServidor = new javax.swing.JLabel();
+        lblNombreDeBaseDeDatos = new javax.swing.JLabel();
+        lblUsuario = new javax.swing.JLabel();
+        lblContraseña = new javax.swing.JLabel();
+        btnCrearBase = new javax.swing.JButton();
+        txtServidor = new javax.swing.JTextField();
+        txtNombreDeBaseDeDatos = new javax.swing.JTextField();
+        txtUsuario = new javax.swing.JTextField();
+        txtContraseña = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        pgbBaseDeDatos.setMaximum(200);
         pgbBaseDeDatos.setStringPainted(true);
 
-        txtTextoInformativo.setText(Glosario.Glosario.FRMInstalacion_getCreaDB());
+        lblTextoInformativo.setText(Glosario.Glosario.FRMInstalacion_getCreaDB());
 
         txtLoginTitle.setFont(new java.awt.Font("Myriad CAD", 1, 24)); // NOI18N
         txtLoginTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -107,6 +123,21 @@ public class FRMInstalacion extends javax.swing.JFrame {
             }
         });
 
+        lblServidor.setText(Glosario.Glosario.getServidor());
+
+        lblNombreDeBaseDeDatos.setText(Glosario.Glosario.getNombreDeBaseDeDatos());
+
+        lblUsuario.setText(Glosario.Glosario.getLoginUsuario());
+
+        lblContraseña.setText(Glosario.Glosario.getLoginContraseña());
+
+        btnCrearBase.setText(Glosario.Glosario.getCrearBaseDeDatos());
+        btnCrearBase.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearBaseActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -115,11 +146,25 @@ public class FRMInstalacion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pgbBaseDeDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtTextoInformativo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtLoginTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnSiguiente)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnSiguiente)
+                            .addComponent(btnCrearBase))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblContraseña, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblNombreDeBaseDeDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblServidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtServidor)
+                            .addComponent(txtNombreDeBaseDeDatos)
+                            .addComponent(txtUsuario)
+                            .addComponent(txtContraseña, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)))
+                    .addComponent(lblTextoInformativo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -128,12 +173,30 @@ public class FRMInstalacion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(txtLoginTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtTextoInformativo)
-                .addGap(18, 18, 18)
+                .addComponent(lblTextoInformativo)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblServidor)
+                    .addComponent(txtServidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblNombreDeBaseDeDatos)
+                    .addComponent(txtNombreDeBaseDeDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblUsuario)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblContraseña)
+                    .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCrearBase)
+                .addGap(20, 20, 20)
                 .addComponent(pgbBaseDeDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSiguiente)
-                .addContainerGap(129, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         pack();
@@ -142,11 +205,28 @@ public class FRMInstalacion extends javax.swing.JFrame {
 
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
         // TODO add your handling code here:
+        List<String> Datos  = new ArrayList<String>();
+        Datos.add(String.format("%1$s:%2$s;", "Servidor", txtServidor.getText()));
+        Datos.add(String.format("%1$s:%2$s;", "NombreDeUsuario", txtLoginTitle.getText()));
+        Datos.add(String.format("%1$s:%2$s;", "Contraseña", txtContraseña.getText()));
+        Datos.add(String.format("%1$s:%2$s;", "NombreDeBase", txtNombreDeBaseDeDatos.getText()));
+        Datos.add(String.format("%1$s:%2$s;", "NombreDeBasePrebia", "sys"));
+        Clases.ClsManejadorDeArchivos.EscribirArchivo(System.getProperty("user.dir") + "/src/Content/AppData/Key.lbl",Datos);
         this.dispose();
         PROYECTO.LOGIN.FRMLogin FRMLogin = new PROYECTO.LOGIN.FRMLogin();
         FRMLogin.setVisible(true);
     }//GEN-LAST:event_btnSiguienteActionPerformed
 
+    private void btnCrearBaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearBaseActionPerformed
+        // TODO add your handling code here:
+        if (ValidaCamposRequeridos()){
+            Tiempo = new Timer(500, new progreso());
+            Tiempo.start();
+        }
+    }//GEN-LAST:event_btnCrearBaseActionPerformed
+    private boolean ValidaCamposRequeridos(){
+        return false;
+    }
     /**
      * @param args the command line arguments
      */
@@ -194,9 +274,18 @@ public class FRMInstalacion extends javax.swing.JFrame {
     private static boolean Estatus = true;
     private List<String> Registros;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCrearBase;
     private javax.swing.JButton btnSiguiente;
+    private javax.swing.JLabel lblContraseña;
+    private javax.swing.JLabel lblNombreDeBaseDeDatos;
+    private javax.swing.JLabel lblServidor;
+    private javax.swing.JLabel lblTextoInformativo;
+    private javax.swing.JLabel lblUsuario;
     private javax.swing.JProgressBar pgbBaseDeDatos;
+    private javax.swing.JPasswordField txtContraseña;
     private javax.swing.JLabel txtLoginTitle;
-    private javax.swing.JLabel txtTextoInformativo;
+    private javax.swing.JTextField txtNombreDeBaseDeDatos;
+    private javax.swing.JTextField txtServidor;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

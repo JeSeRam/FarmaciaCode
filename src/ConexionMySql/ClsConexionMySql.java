@@ -6,6 +6,7 @@
 package ConexionMySql;
 
 import Clases.ClsEstructura;
+import Clases.ClsManejadorDeArchivos;
 import Clases.ClsRelacion;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,7 +23,7 @@ import java.util.List;
  * @author Freak
  * @version Beta
  */
-public class ClsConexionMySql {
+public final class ClsConexionMySql {
     // <editor-fold defaultstate="collapsed" desc="Constructor">
     public ClsConexionMySql(String Servidor,String NombreDeUsuario,String Contraseña,String NombreDeBase,String NombreDeBasePrebia){
         _Servidor = Servidor;
@@ -33,6 +34,7 @@ public class ClsConexionMySql {
     }
     public ClsConexionMySql() {
         try {
+            this.CargaVariablesDeConexion();
             Class.forName("com.mysql.jdbc.Driver");
             _Conexion = DriverManager.getConnection("jdbc:mysql://" + _Servidor + "/" + _NombreDeBase + "?useSSL=false", _NombreDeUsuario, _Contraseña);
             MensajeError.Estatus(true);
@@ -52,7 +54,37 @@ public class ClsConexionMySql {
             MensajeError.Funcionalidad(1);
             MensajeError.CodigoDeError(sqle.getErrorCode());
             MensajeError.Mensaje(sqle.getMessage());
-            
+        } catch (Exception e) {
+            MensajeError.Estatus(false);
+            MensajeError.NumeroDePantalla(1);
+            MensajeError.Funcionalidad(1);
+            MensajeError.CodigoDeError(3);
+            MensajeError.Mensaje(e.getMessage());
+        }
+        
+    }
+    public ClsConexionMySql(boolean CreaBase) {
+        try {
+            this.CargaVariablesDeConexion();
+            Class.forName("com.mysql.jdbc.Driver");
+            _Conexion = DriverManager.getConnection("jdbc:mysql://" + _Servidor + "/" + _NombreDeBasePrebia + "?useSSL=false", _NombreDeUsuario, _Contraseña);
+            MensajeError.Estatus(true);
+            MensajeError.NumeroDePantalla(1);
+            MensajeError.Funcionalidad(1);
+            MensajeError.CodigoDeError(0);
+            MensajeError.Mensaje("Conectado");
+        } catch (ClassNotFoundException cnfe) {
+            MensajeError.Estatus(false);
+            MensajeError.NumeroDePantalla(1);
+            MensajeError.Funcionalidad(1);
+            MensajeError.CodigoDeError(1);
+            MensajeError.Mensaje(cnfe.getMessage());
+        } catch (SQLException sqle) {
+            MensajeError.Estatus(false);
+            MensajeError.NumeroDePantalla(1);
+            MensajeError.Funcionalidad(1);
+            MensajeError.CodigoDeError(sqle.getErrorCode());
+            MensajeError.Mensaje(sqle.getMessage());
         } catch (Exception e) {
             MensajeError.Estatus(false);
             MensajeError.NumeroDePantalla(1);
@@ -155,49 +187,53 @@ public class ClsConexionMySql {
         Registros.add("insert into pantalla values (7,19,1,1,'FRMProducto','Productos','Producto.FRMSurtir','Surtir Producto',1)");
         return Registros;
     }
-    public Clases.ClsMensajeError CreaDB() {
+    public List<String> CreaEstructuraDB() {
         try {
-            int c = 2;
             List<ClsEstructura> ArregloRelaciones = CreaListaDeTablas();
             ClsRelacion[] Estructura;
-            Class.forName("com.mysql.jdbc.Driver");
-            _Conexion = DriverManager.getConnection("jdbc:mysql://" + _Servidor + "/" + _NombreDeBasePrebia + "?useSSL=false", _NombreDeUsuario, _Contraseña);
-            String[] CreaBase= new String[ArregloRelaciones.size() + 2 + (ArregloRelaciones.size() * 2)];
+            List<String>CreaBase = new ArrayList<String>();
             // Crea Base de datos y la usa
-            CreaBase[0] = "CREATE DATABASE " + _NombreDeBase;
-            CreaBase[1] = "USE " + _NombreDeBase;
+            CreaBase.add("CREATE DATABASE " + _NombreDeBase);
+            CreaBase.add("USE " + _NombreDeBase);
             // Crea Tablas
             for (ClsEstructura Relaciones: ArregloRelaciones){
                 Estructura = Relaciones.Estructura();
-                CreaBase[c] = "CREATE TABLE " + Relaciones.Tabla().NombreTabla() + " (";
+                String Tabla = "CREATE TABLE " + Relaciones.Tabla().NombreTabla() + " (";
                 for (int i = 0;i < Estructura.length; i++){
-                        CreaBase[c] += Estructura[i].Campo().toUpperCase();
-                        CreaBase[c] += " " + ConvierteTipoDeDatoBase(Estructura[i].TipoDeDato().toUpperCase());
-                        CreaBase[c] += LongitudDeCampos(Estructura[i].TipoDeDato().toUpperCase(),Estructura[i].Capacidad(),Estructura[i].Decimales());
-                        CreaBase[c] += " " + Estructura[i].IsNull().toUpperCase() + ",";
-                    }
-                    CreaBase[c] = CreaBase[c].substring(0, CreaBase[c].length() - 1) + ")";
-                c++;
+                    Tabla += Estructura[i].Campo().toUpperCase();
+                    Tabla += " " + ConvierteTipoDeDatoBase(Estructura[i].TipoDeDato().toUpperCase());
+                    Tabla += LongitudDeCampos(Estructura[i].TipoDeDato().toUpperCase(),Estructura[i].Capacidad(),Estructura[i].Decimales());
+                    Tabla += " " + Estructura[i].IsNull().toUpperCase() + ",";
+                }
+                Tabla = Tabla.substring(0, Tabla.length() - 1) + ")";
+                CreaBase.add(Tabla);
             }
             // Crea Vistas
             
+            for (ClsEstructura Relaciones: ArregloRelaciones){
+                CreaBase.add(Relaciones.Index());
+            }
+            for (ClsEstructura Relaciones: ArregloRelaciones){
+                CreaBase.add(Relaciones.Vista());
+            }
+            return CreaBase;
+        } catch (Exception e) {
+            MensajeError.Estatus(false);
+            MensajeError.NumeroDePantalla(1);
+            MensajeError.Funcionalidad(2);
+            MensajeError.CodigoDeError(3);
+            MensajeError.Mensaje(e.getMessage());
+        }
+        return new ArrayList<String>();
+    }
+    public boolean CreaDB(String Sql){
+        boolean estatus = true;
+        try{
             // Inserta todo
-            boolean estatus = true;
-            for (ClsEstructura Relaciones: ArregloRelaciones){
-                CreaBase[c] = Relaciones.Index();
-                c++;
-            }
-            for (ClsEstructura Relaciones: ArregloRelaciones){
-                CreaBase[c] = Relaciones.Vista();
-                c++;
-            }
             IniciaTrnsaccion();
-            for (int i = 0; i < CreaBase.length; i++) {
-                if (!Transaccion(CreaBase[i])) {
+            if (!Transaccion(Sql)) {
                     estatus = false;
-                    break;
                 }
-            }
             if (estatus) {
                 MensajeError.Estatus(true);
                 MensajeError.Mensaje("Se Cargo completamente la base de datos.");
@@ -208,32 +244,17 @@ public class ClsConexionMySql {
                 MensajeError.Mensaje("Error al crear base de datos.");
                 MensajeError.CodigoDeError(4);
                 Rollback();
-            }            
-            MensajeError.NumeroDePantalla(1);
-            MensajeError.Funcionalidad(2);
-            return MensajeError;
-        } catch (ClassNotFoundException cnfe) {
-            MensajeError.Estatus(false);
-            MensajeError.NumeroDePantalla(1);
-            MensajeError.Funcionalidad(2);
-            MensajeError.CodigoDeError(1);
-            MensajeError.Mensaje(cnfe.getMessage());
-            return MensajeError;
-        } catch (SQLException sqle) {
-            MensajeError.Estatus(false);
-            MensajeError.NumeroDePantalla(1);
-            MensajeError.Funcionalidad(2);
-            MensajeError.CodigoDeError(sqle.getErrorCode());
-            MensajeError.Mensaje(sqle.getMessage());
-            return MensajeError;
-        } catch (Exception e) {
+            }    
+        }catch(Exception e){
+            estatus = false;
             MensajeError.Estatus(false);
             MensajeError.NumeroDePantalla(1);
             MensajeError.Funcionalidad(2);
             MensajeError.CodigoDeError(3);
             MensajeError.Mensaje(e.getMessage());
-            return MensajeError;
+            Rollback();
         }
+        return estatus;
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Consulta">
@@ -366,6 +387,36 @@ public class ClsConexionMySql {
     }
     public Clases.ClsMensajeError RegresaEstatus(){
         return MensajeError;
+    }
+    // </editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Lecctuara de Archivo Conexion">
+    public void CargaVariablesDeConexion() {
+        String Configuracion = Clases.ClsManejadorDeArchivos.LeerArchivo(System.getProperty("user.dir") + "/src/Content/AppData/Key.lbl", false);
+        String[] Valores = Configuracion.split(";");
+        for (String CamposValor: Valores){
+            String[] CampoValor = CamposValor.split(":");
+            if (CampoValor.length == 2){
+                if(null != CampoValor[0])switch (CampoValor[0]) {
+                    case "Servidor":
+                        _Servidor = CampoValor[1];
+                        break;
+                    case "NombreDeUsuario":
+                        _NombreDeUsuario = CampoValor[1];
+                        break;
+                    case "Contraseña":
+                        _Contraseña = CampoValor[1];
+                        break;
+                    case "NombreDeBase":
+                        _NombreDeBase = CampoValor[1];
+                        break;
+                    case "NombreDeBasePrebia":
+                        _NombreDeBasePrebia = CampoValor[1];
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Declaracion de variables">
