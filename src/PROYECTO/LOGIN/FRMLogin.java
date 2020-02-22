@@ -9,6 +9,8 @@ import Funcionalidades.ClsOperaUsuario;
 import Clases.Sesion;
 import PROYECTO.DESKTOP.DesktopMain;
 import static PROYECTO.FuncionesParalelas.Contraseña.Desifrado;
+import static PROYECTO.FuncionesParalelas.Contraseña.decrypt;
+import static PROYECTO.FuncionesParalelas.Contraseña.encrypt;
 import javax.swing.JOptionPane;
 
 /**
@@ -164,18 +166,17 @@ public class FRMLogin extends javax.swing.JFrame {
     private void pwdLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pwdLoginActionPerformed
         // TODO add your handling code here:
         if(!txtLogin.getText().equals("") && pwdLogin.getPassword().length != 0){
-            String Usuario = txtLogin.getText().trim();
-            String Contraseña = Desifrado(pwdLogin.getPassword());  
-            if(txtLogin.getText().equals("Desarrollo") && Contraseña.equals("Des01.23")){
+            String Usuario = txtLogin.getText().trim(); 
+            if(txtLogin.getText().equals("Desarrollo") && decrypt(Desifrado(pwdLogin.getPassword())).equals("Des01.23")){
                 Sesion.NumeroDeUsuario(0);
                 Sesion.NombreDeUsuario(Usuario);
                 this.dispose();
                 DesktopMain Escritorio = new DesktopMain();
                 Escritorio.setVisible(true);
             }else{
-                Entidades.ClsUsuario Registro = (new ClsOperaUsuario()).Consulta("", Usuario, Contraseña);
+                Entidades.ClsUsuario Registro = (new ClsOperaUsuario()).Consulta("", Usuario, encrypt(Desifrado(pwdLogin.getPassword())));
                 if(Registro.NumeroDeUsuario() != 0){
-                    if (Usuario.equals(Registro.NombreDeUsuario()) && Contraseña.equals(Registro.ContraseñaDeUsuario())){
+                    if (Usuario.equals(Registro.NombreDeUsuario()) && encrypt(Desifrado(pwdLogin.getPassword())).equals(Registro.ContraseñaDeUsuario())){
                         Sesion.NumeroDeUsuario(Registro.NumeroDeUsuario());
                         Sesion.NombreDeUsuario(Registro.NombreDeUsuario());
                         Sesion.RecuperaPerfil();
@@ -202,17 +203,17 @@ public class FRMLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(!txtLogin.getText().equals("") && pwdLogin.getPassword().length != 0){
             String Usuario = txtLogin.getText().trim();
-            String Contraseña = Desifrado(pwdLogin.getPassword());  
-            if(txtLogin.getText().equals("Desarrollo") && Contraseña.equals("Des01.23")){
+            Desifrado(pwdLogin.getPassword());  
+            if(txtLogin.getText().equals("Desarrollo") && decrypt(Desifrado(pwdLogin.getPassword())).equals("Des01.23")){
                 Sesion.NumeroDeUsuario(0);
                 Sesion.NombreDeUsuario(Usuario);
                 this.dispose();
                 DesktopMain Escritorio = new DesktopMain();
                 Escritorio.setVisible(true);
             }else{
-                Entidades.ClsUsuario Registro = (new ClsOperaUsuario()).Consulta("", Usuario, Contraseña);
+                Entidades.ClsUsuario Registro = (new ClsOperaUsuario()).Consulta("", Usuario, encrypt(Desifrado(pwdLogin.getPassword())));
                 if(Registro.NumeroDeUsuario() != 0){
-                    if (Usuario.equals(Registro.NombreDeUsuario()) && Contraseña.equals(Registro.ContraseñaDeUsuario())){
+                    if (Usuario.equals(Registro.NombreDeUsuario()) && encrypt(Desifrado(pwdLogin.getPassword())).equals(Registro.ContraseñaDeUsuario())){
                         Sesion.NumeroDeUsuario(Registro.NumeroDeUsuario());
                         Sesion.NombreDeUsuario(Registro.NombreDeUsuario());
                         Sesion.RecuperaPerfil();

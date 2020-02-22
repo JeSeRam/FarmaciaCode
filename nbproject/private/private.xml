@@ -5,7 +5,7 @@
             <url>src/ConexionMySql/ClsConexionMySql.java</url>
             <bookmark id="2">
                 <name/>
-                <line>164</line>
+                <line>163</line>
                 <key/>
             </bookmark>
         </file>
@@ -14,8 +14,10 @@
         <group>
             <file>file:/S:/ProyectoFreak0121/Farmacia/FarmaciaCodeV1/src/Clases/ClsManejadorDeArchivos.java</file>
             <file>file:/S:/ProyectoFreak0121/Farmacia/FarmaciaCodeV1/src/ConexionMySql/ClsConexionMySql.java</file>
-            <file>file:/S:/ProyectoFreak0121/Farmacia/FarmaciaCodeV1/src/Clases/ClsMensajeError.java</file>
+            <file>file:/S:/ProyectoFreak0121/Farmacia/FarmaciaCodeV1/src/PROYECTO/INSTALACION/FRMInstalacionPaso2.java</file>
             <file>file:/S:/ProyectoFreak0121/Farmacia/FarmaciaCodeV1/src/PROYECTO/INSTALACION/FRMInstalacion.java</file>
+            <file>file:/S:/ProyectoFreak0121/Farmacia/FarmaciaCodeV1/src/PROYECTO/LOGIN/FRMLogin.java</file>
+            <file>file:/S:/ProyectoFreak0121/Farmacia/FarmaciaCodeV1/src/Entidades/ClsUsuario.java</file>
         </group>
     </open-files>
 </project-private>

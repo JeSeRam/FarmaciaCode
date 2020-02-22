@@ -6,8 +6,8 @@
 package ConexionMySql;
 
 import Clases.ClsEstructura;
-import Clases.ClsManejadorDeArchivos;
 import Clases.ClsRelacion;
+import static PROYECTO.FuncionesParalelas.Contraseña.decrypt;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -36,7 +36,7 @@ public final class ClsConexionMySql {
         try {
             this.CargaVariablesDeConexion();
             Class.forName("com.mysql.jdbc.Driver");
-            _Conexion = DriverManager.getConnection("jdbc:mysql://" + _Servidor + "/" + _NombreDeBase + "?useSSL=false", _NombreDeUsuario, _Contraseña);
+            _Conexion = DriverManager.getConnection("jdbc:mysql://" + _Servidor + "/" + _NombreDeBase + "?useSSL=false", _NombreDeUsuario, decrypt(_Contraseña));
             MensajeError.Estatus(true);
             MensajeError.NumeroDePantalla(1);
             MensajeError.Funcionalidad(1);
@@ -61,13 +61,12 @@ public final class ClsConexionMySql {
             MensajeError.CodigoDeError(3);
             MensajeError.Mensaje(e.getMessage());
         }
-        
     }
     public ClsConexionMySql(boolean CreaBase) {
         try {
             this.CargaVariablesDeConexion();
             Class.forName("com.mysql.jdbc.Driver");
-            _Conexion = DriverManager.getConnection("jdbc:mysql://" + _Servidor + "/" + _NombreDeBasePrebia + "?useSSL=false", _NombreDeUsuario, _Contraseña);
+            _Conexion = DriverManager.getConnection("jdbc:mysql://" + _Servidor + "/" + _NombreDeBasePrebia + "?useSSL=false", _NombreDeUsuario, decrypt(_Contraseña));
             MensajeError.Estatus(true);
             MensajeError.NumeroDePantalla(1);
             MensajeError.Funcionalidad(1);

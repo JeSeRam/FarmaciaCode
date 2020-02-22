@@ -49,9 +49,10 @@ public class ClsManejadorDeArchivos {
             FileWriter fichero = new FileWriter(Ruta);
             PrintWriter pw = new PrintWriter(fichero);
             if (!Registros.isEmpty()){
-                Registros.forEach((Registro) -> {
+                for (String Registro: Registros){
                     pw.println(Registro);
-                });
+                }
+                fichero.close();
             } else {
                 estatus = false;
             }

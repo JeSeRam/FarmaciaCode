@@ -6,7 +6,8 @@
 package PROYECTO.INSTALACION;
 
 import ConexionMySql.ClsConexionMySql;
-import PROYECTO.LOGIN.FRMLogin;
+import static PROYECTO.FuncionesParalelas.Contraseña.Desifrado;
+import static PROYECTO.FuncionesParalelas.Contraseña.encrypt;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -25,9 +26,6 @@ public class FRMInstalacion extends javax.swing.JFrame {
      */
     public FRMInstalacion() {
         if (!Clases.ClsManejadorDeArchivos.ExisteArchivo(System.getProperty("user.dir") + "/src/Content/AppData/Key.lbl")){
-            Conexion = new ClsConexionMySql(true);
-            Registros = Conexion.CreaEstructuraDB();
-            Registros.addAll(Conexion.CreaRegistros());
             initComponents();
         } else {
             Conexion = new ClsConexionMySql();
@@ -39,7 +37,7 @@ public class FRMInstalacion extends javax.swing.JFrame {
                 }else{
                     Estatus = false;
                     this.dispose();
-                    FRMLogin Login = new FRMLogin();
+                    PROYECTO.LOGIN.FRMLogin Login = new PROYECTO.LOGIN.FRMLogin();
                     Login.setVisible(true);
                 }
             }else{
@@ -205,27 +203,32 @@ public class FRMInstalacion extends javax.swing.JFrame {
 
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
         // TODO add your handling code here:
-        List<String> Datos  = new ArrayList<String>();
-        Datos.add(String.format("%1$s:%2$s;", "Servidor", txtServidor.getText()));
-        Datos.add(String.format("%1$s:%2$s;", "NombreDeUsuario", txtLoginTitle.getText()));
-        Datos.add(String.format("%1$s:%2$s;", "Contraseña", txtContraseña.getText()));
-        Datos.add(String.format("%1$s:%2$s;", "NombreDeBase", txtNombreDeBaseDeDatos.getText()));
-        Datos.add(String.format("%1$s:%2$s;", "NombreDeBasePrebia", "sys"));
-        Clases.ClsManejadorDeArchivos.EscribirArchivo(System.getProperty("user.dir") + "/src/Content/AppData/Key.lbl",Datos);
         this.dispose();
-        PROYECTO.LOGIN.FRMLogin FRMLogin = new PROYECTO.LOGIN.FRMLogin();
-        FRMLogin.setVisible(true);
+        PROYECTO.INSTALACION.FRMInstalacionPaso2 FRMInstalacionPaso2 = new PROYECTO.INSTALACION.FRMInstalacionPaso2();
+        FRMInstalacionPaso2.setVisible(true);
     }//GEN-LAST:event_btnSiguienteActionPerformed
 
     private void btnCrearBaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearBaseActionPerformed
         // TODO add your handling code here:
         if (ValidaCamposRequeridos()){
+            btnCrearBase.setEnabled(false);
+            List<String> Datos  = new ArrayList<String>();
+            Datos.add(String.format("%1$s:%2$s;", "Servidor", txtServidor.getText()));
+            Datos.add(String.format("%1$s:%2$s;", "NombreDeUsuario", txtUsuario.getText()));
+            Datos.add(String.format("%1$s:%2$s;", "Contraseña", encrypt(Desifrado(txtContraseña.getPassword()))));
+            Datos.add(String.format("%1$s:%2$s;", "NombreDeBase", txtNombreDeBaseDeDatos.getText()));
+            Datos.add(String.format("%1$s:%2$s;", "NombreDeBasePrebia", "sys"));
+            Clases.ClsManejadorDeArchivos.EscribirArchivo(System.getProperty("user.dir") + "/src/Content/AppData/Key.lbl", Datos);
+            Conexion = new ClsConexionMySql(true);
+            Registros = Conexion.CreaEstructuraDB();
+            Registros.addAll(Conexion.CreaRegistros());
+            
             Tiempo = new Timer(500, new progreso());
             Tiempo.start();
         }
     }//GEN-LAST:event_btnCrearBaseActionPerformed
     private boolean ValidaCamposRequeridos(){
-        return false;
+        return true;
     }
     /**
      * @param args the command line arguments
@@ -253,10 +256,9 @@ public class FRMInstalacion extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(FRMInstalacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
-        Conexion = new ClsConexionMySql();
-        MensajeError = Conexion.RegresaEstatus();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new FRMInstalacion().setVisible(Estatus);
@@ -269,7 +271,7 @@ public class FRMInstalacion extends javax.swing.JFrame {
     }
     private long NumeroDePantalla = 0;
     private static Clases.ClsMensajeError  MensajeError = new Clases.ClsMensajeError();
-    private static ClsConexionMySql Conexion = new ClsConexionMySql("JeSeRamCorp","Aplicativo","12345","ADMON","sys");
+    private static ClsConexionMySql Conexion = null;
     private Timer Tiempo;
     private static boolean Estatus = true;
     private List<String> Registros;
