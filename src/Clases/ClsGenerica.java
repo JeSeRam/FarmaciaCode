@@ -6,6 +6,7 @@
 package Clases;
 
 import ConexionMySql.ClsResultSet;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,11 @@ import java.util.List;
  *
  * @author Freak
  */
-public class ClsGenerica <T>{
+public class ClsGenerica <T> {
+    Object Clase = new Object();
+    public ClsGenerica(T Entidad){
+        Clase = Entidad;
+    }
     public List<T> ParseaResulSetAList(ConexionMySql.ClsResultSet Rec,T Entidad2){
         List<T> Entidad = new ArrayList<T>();
         if (Rec.TieneRegistros()){
@@ -22,5 +27,20 @@ public class ClsGenerica <T>{
             }
         }
         return Entidad;
+    }
+    public String GeneraCambiosUpdate(String CampoEntidad,Object Cambio){
+        Method[] metodos = Clase.getClass().getMethods();
+        for(Method c: metodos){
+            if (c.getName().equals(CampoEntidad)){
+                String er = c.getGenericReturnType().toString();
+            }
+        }
+        return "";
+    }
+    public String CambioTipo(Object Cambio){
+        if (Cambio.getClass() == String.class){
+            return "'" + Cambio + "'";
+        }
+        return Cambio.toString();
     }
 }

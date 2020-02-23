@@ -292,7 +292,7 @@ public class ClsUsuario implements IUsuario {
         String sql = "";
         if (!Cambios.isEmpty()) {
             for (Map.Entry<String, Object> Cambio : Cambios.entrySet()) {
-                sql += (Cambio.getKey() + " = " + Cambio.getValue()).concat(",");
+                sql += (Cambio.getKey() + " = " + (new Clases.ClsGenerica(this)).CambioTipo(Cambio.getValue())).concat(",");
             }
             sql = sql.substring(0, sql.length() - 1);
             if (sql != null) {

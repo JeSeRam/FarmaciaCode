@@ -13,6 +13,7 @@ import static PROYECTO.FuncionesParalelas.Contraseña.encrypt;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -146,7 +147,7 @@ public class FRMInstalacionPaso2 extends javax.swing.JFrame {
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
         // TODO add your handling code here:
         Entidades.ClsUsuario Registro = (new ClsOperaUsuario()).Consulta("1", "", "");
-        Map<String, Object> Cambios = null;
+        Map<String, Object> Cambios = new HashMap<String, Object>();
         Cambios.put(Entidades.ClsUsuario.RelacionesUsuario.NombreDeUsuario.Campo(), txtUsuario.getText());
         Cambios.put(Entidades.ClsUsuario.RelacionesUsuario.ContraseñaDeUsuario.Campo(), encrypt(Desifrado(pwdContraseña.getPassword())));
         if (Registro.Update(Cambios)){
