@@ -47,9 +47,6 @@ public class Glosario {
     public static String getCrearBaseDeDatos(){
         return "CONTINUAR INSTALACIÓN";
     }
-    public static String getBaseDeDatosExistente(){
-        return "CONECTAR A UNA BASE EXISTENTE";
-    }
     public static String FRMInstalacion_getCreaDB(){
         return "Creando Base de Datos para el sistema, esto puede tardar unos minutos.";
     }
