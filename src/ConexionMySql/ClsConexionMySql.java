@@ -89,11 +89,7 @@ public final class ClsConexionMySql {
             MensajeError.NumeroDePantalla(1);
             MensajeError.Funcionalidad(1);
             MensajeError.CodigoDeError(3);
-            if (e.getMessage() == null) {
-                MensajeError.Mensaje("Ocurrió un error grave en la conexión");
-            } else {
-                MensajeError.Mensaje(e.getMessage());
-            }
+            MensajeError.Mensaje(e.getMessage());
         }
         
     }// </editor-fold>
@@ -394,7 +390,7 @@ public final class ClsConexionMySql {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Lecctuara de Archivo Conexion">
     public void CargaVariablesDeConexion() {
-        String Configuracion = Clases.ClsManejadorDeArchivos.LeerArchivo(System.getProperty("user.dir") + "/AppData/Key.lbl", false);
+        String Configuracion = Clases.ClsManejadorDeArchivos.LeerArchivo(System.getProperty("user.dir") + "/src/Content/AppData/Key.lbl", false);
         String[] Valores = Configuracion.split(";");
         for (String CamposValor: Valores){
             String[] CampoValor = CamposValor.split(":");
