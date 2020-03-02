@@ -76,6 +76,7 @@ public class FRMRegistrar extends javax.swing.JFrame {
         lblReloj.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblReloj.setText("Hora");
 
+        btnCancelar.setBackground(new java.awt.Color(255, 0, 0));
         btnCancelar.setText(Glosario.Glosario.getCancelar());
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

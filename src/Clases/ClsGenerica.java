@@ -5,7 +5,6 @@
  */
 package Clases;
 
-import ConexionMySql.ClsResultSet;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class ClsGenerica <T> {
         Clase = Entidad;
     }
     public List<T> ParseaResulSetAList(ConexionMySql.ClsResultSet Rec,T Entidad2){
-        List<T> Entidad = new ArrayList<T>();
+        List<T> Entidad = new ArrayList<>();
         if (Rec.TieneRegistros()){
             while(Rec.Lee()){
                // Entidad.add(Entidad2(Rec,true));
