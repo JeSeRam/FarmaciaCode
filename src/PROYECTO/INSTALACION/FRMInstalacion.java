@@ -8,10 +8,6 @@ package PROYECTO.INSTALACION;
 import ConexionMySql.ClsConexionMySql;
 import static PROYECTO.FuncionesParalelas.Contraseña.Desifrado;
 import static PROYECTO.FuncionesParalelas.Contraseña.encrypt;
-import static PROYECTO.FuncionesParalelas.Iconos.ColocaIcono;
-import static PROYECTO.FuncionesParalelas.Iconos.getRutaIconoCorrecto;
-import static PROYECTO.FuncionesParalelas.Iconos.getRutaIconoIncorrecto;
-import static java.awt.Component.CENTER_ALIGNMENT;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -29,18 +25,12 @@ public class FRMInstalacion extends javax.swing.JFrame {
      * Creates new form FRMInstalacion
      */
     public FRMInstalacion() {
-        Archivos = new Clases.ClsManejadorDeArchivos(true);
-        if (!Clases.ClsManejadorDeArchivos.ExisteArchivo(Archivos.AppDataKey())){
-            if (!Clases.ClsManejadorDeArchivos.CreaDirectorio(Archivos.AppData())){
-                    JOptionPane.showMessageDialog(this, "No fue posible registrar carpeta AppData para realizar la instalación",
-                    "Error en conexion", JOptionPane.ERROR_MESSAGE);
-            }else{
-                initComponents();
-            }
+        if (!Clases.ClsManejadorDeArchivos.ExisteArchivo(System.getProperty("user.dir") + "/src/Content/AppData/Key.lbl")){
+            initComponents();
         } else {
             Conexion = new ClsConexionMySql();
-            MensajeError = Conexion.RegresaEstatus();
-            if(MensajeError.Estatus()){
+            Clases.ClsMensajeError RegEstatus = Conexion.RegresaEstatus();
+            if(RegEstatus.Estatus()){
                 if (!Conexion.Consulta("select * from " + Entidades.ClsClave.RelacionesClave.Tabla.NombreTabla()).TieneRegistros()){
                     JOptionPane.showMessageDialog(this, "No es posible realizar consultas a la base de datos",
                     "Error en conexion", JOptionPane.ERROR_MESSAGE);
@@ -51,7 +41,7 @@ public class FRMInstalacion extends javax.swing.JFrame {
                     Login.setVisible(true);
                 }
             }else{
-                JOptionPane.showMessageDialog(this, MensajeError.Mensaje(),
+                JOptionPane.showMessageDialog(this, RegEstatus.Mensaje(),
                     "Error en conexion", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -108,11 +98,6 @@ public class FRMInstalacion extends javax.swing.JFrame {
         txtNombreDeBaseDeDatos = new javax.swing.JTextField();
         txtUsuario = new javax.swing.JTextField();
         txtContraseña = new javax.swing.JPasswordField();
-        lblContraseñaC = new javax.swing.JLabel();
-        lblBaseC = new javax.swing.JLabel();
-        lblUsuarioC = new javax.swing.JLabel();
-        lblHostC = new javax.swing.JLabel();
-        btnBaseExistente = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -130,7 +115,6 @@ public class FRMInstalacion extends javax.swing.JFrame {
 
         btnSiguiente.setVisible(false);
         btnSiguiente.setText(Glosario.Glosario.General_getSiguiente());
-        btnSiguiente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSiguienteActionPerformed(evt);
@@ -146,27 +130,9 @@ public class FRMInstalacion extends javax.swing.JFrame {
         lblContraseña.setText(Glosario.Glosario.getLoginContraseña());
 
         btnCrearBase.setText(Glosario.Glosario.getCrearBaseDeDatos());
-        btnCrearBase.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCrearBase.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCrearBaseActionPerformed(evt);
-            }
-        });
-
-        lblContraseñaC.setVisible(false);
-
-        lblContraseñaC.setVisible(false);
-
-        lblContraseñaC.setVisible(false);
-
-        lblContraseñaC.setVisible(false);
-
-        btnBaseExistente.setBackground(new java.awt.Color(0, 204, 255));
-        btnBaseExistente.setText(Glosario.Glosario.getBaseDeDatosExistente());
-        btnBaseExistente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnBaseExistente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBaseExistenteActionPerformed(evt);
             }
         });
 
@@ -179,33 +145,24 @@ public class FRMInstalacion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pgbBaseDeDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtLoginTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lblContraseña, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
-                            .addComponent(lblUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblNombreDeBaseDeDatos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblServidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblBaseC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblContraseñaC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblUsuarioC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblHostC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnSiguiente)
+                            .addComponent(btnCrearBase))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblContraseña, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblNombreDeBaseDeDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblServidor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtServidor)
                             .addComponent(txtNombreDeBaseDeDatos)
                             .addComponent(txtUsuario)
                             .addComponent(txtContraseña, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)))
-                    .addComponent(lblTextoInformativo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnSiguiente)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnCrearBase)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnBaseExistente)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(lblTextoInformativo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -216,34 +173,28 @@ public class FRMInstalacion extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTextoInformativo)
                 .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblServidor)
-                    .addComponent(txtServidor)
-                    .addComponent(lblHostC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtServidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblNombreDeBaseDeDatos)
-                    .addComponent(txtNombreDeBaseDeDatos)
-                    .addComponent(lblBaseC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtNombreDeBaseDeDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblUsuario)
-                    .addComponent(txtUsuario)
-                    .addComponent(lblUsuarioC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblContraseña)
-                    .addComponent(txtContraseña)
-                    .addComponent(lblContraseñaC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCrearBase)
-                    .addComponent(btnBaseExistente))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblContraseña)
+                    .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCrearBase)
                 .addGap(20, 20, 20)
                 .addComponent(pgbBaseDeDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSiguiente)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         pack();
@@ -261,123 +212,22 @@ public class FRMInstalacion extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (ValidaCamposRequeridos()){
             btnCrearBase.setEnabled(false);
-            btnBaseExistente.setEnabled(false);
             List<String> Datos  = new ArrayList<String>();
             Datos.add(String.format("%1$s:%2$s;", "Servidor", txtServidor.getText()));
             Datos.add(String.format("%1$s:%2$s;", "NombreDeUsuario", txtUsuario.getText()));
             Datos.add(String.format("%1$s:%2$s;", "Contraseña", encrypt(Desifrado(txtContraseña.getPassword()))));
             Datos.add(String.format("%1$s:%2$s;", "NombreDeBase", txtNombreDeBaseDeDatos.getText()));
             Datos.add(String.format("%1$s:%2$s;", "NombreDeBasePrebia", "sys"));
-            Clases.ClsManejadorDeArchivos.EscribirArchivo(Archivos.AppDataKey(), Datos);
+            Clases.ClsManejadorDeArchivos.EscribirArchivo(System.getProperty("user.dir") + "/src/Content/AppData/Key.lbl", Datos);
             Conexion = new ClsConexionMySql(true);
-            MensajeError = Conexion.RegresaEstatus();
-            if (MensajeError.Estatus()){
-                Registros = Conexion.CreaEstructuraDB();
-                Registros.addAll(Conexion.CreaRegistros());
-
-                Tiempo = new Timer(500, new progreso());
-                Tiempo.start();
-            }else{
-                btnCrearBase.setEnabled(true); 
-                ValidaServidor(true);
-                ValidaUsuario(true);
-                ValidaContraseña(true);
-                ValidaBaseDeDatos(true);
-                JOptionPane.showMessageDialog(this, MensajeError.Mensaje(),
-                        "Error en conexion", JOptionPane.ERROR_MESSAGE);
-                Clases.ClsManejadorDeArchivos.EliminaArchivo(Archivos.AppDataKey());
-            }
+            Registros = Conexion.CreaEstructuraDB();
+            Registros.addAll(Conexion.CreaRegistros());
+            
+            Tiempo = new Timer(500, new progreso());
+            Tiempo.start();
         }
     }//GEN-LAST:event_btnCrearBaseActionPerformed
-
-    private void btnBaseExistenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBaseExistenteActionPerformed
-        // TODO add your handling code here:
-        if (ValidaCamposRequeridos()){
-            btnCrearBase.setEnabled(false);
-            List<String> Datos  = new ArrayList<String>();
-            Datos.add(String.format("%1$s:%2$s;", "Servidor", txtServidor.getText()));
-            Datos.add(String.format("%1$s:%2$s;", "NombreDeUsuario", txtUsuario.getText()));
-            Datos.add(String.format("%1$s:%2$s;", "Contraseña", encrypt(Desifrado(txtContraseña.getPassword()))));
-            Datos.add(String.format("%1$s:%2$s;", "NombreDeBase", txtNombreDeBaseDeDatos.getText()));
-            Datos.add(String.format("%1$s:%2$s;", "NombreDeBasePrebia", "sys"));
-            Clases.ClsManejadorDeArchivos.EscribirArchivo(Archivos.AppDataKey(), Datos);
-            Conexion = new ClsConexionMySql();
-            MensajeError = Conexion.RegresaEstatus();
-            if(MensajeError.Estatus()){
-                if (!Conexion.Consulta("select * from " + Entidades.ClsClave.RelacionesClave.Tabla.NombreTabla()).TieneRegistros()){
-                    JOptionPane.showMessageDialog(this, "No es posible realizar consultas a la base de datos",
-                    "Error en conexion", JOptionPane.ERROR_MESSAGE);
-                    btnBaseExistente.setEnabled(true);
-                }else{
-                    Estatus = false;
-                    this.dispose();
-                    PROYECTO.LOGIN.FRMLogin Login = new PROYECTO.LOGIN.FRMLogin();
-                    Login.setVisible(true);
-                }
-            }else{
-                JOptionPane.showMessageDialog(this, MensajeError.Mensaje(),
-                    "Error en conexion", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }//GEN-LAST:event_btnBaseExistenteActionPerformed
-    private String ValidaServidor(boolean Incorrecto){
-        if (txtServidor.getText().trim().equals("") || Incorrecto){
-            lblHostC.setIcon(ColocaIcono(getRutaIconoIncorrecto(),30,30,(int) CENTER_ALIGNMENT));
-            lblHostC.setVisible(true);
-            return "El Campo Servidor es un Campo requerido";
-        } else {
-            lblHostC.setIcon(ColocaIcono(getRutaIconoCorrecto(),30,30,(int) CENTER_ALIGNMENT));
-            lblHostC.setVisible(true);
-            return "";
-        }
-    }
-    private String ValidaUsuario(boolean Incorrecto){
-        if (txtUsuario.getText().trim().equals("") || Incorrecto){
-            lblUsuarioC.setIcon(ColocaIcono(getRutaIconoIncorrecto(),30,30,(int) CENTER_ALIGNMENT));
-            lblUsuarioC.setVisible(true);
-            return "El Campo Usuario es un Campo requerido";
-        } else {
-            lblUsuarioC.setIcon(ColocaIcono(getRutaIconoCorrecto(),30,30,(int) CENTER_ALIGNMENT));
-            lblUsuarioC.setVisible(true);
-            return "";
-        }
-    }
-    private String ValidaContraseña(boolean Incorrecto){
-        if (Desifrado(txtContraseña.getPassword()).trim().equals("") || Incorrecto){
-            lblContraseñaC.setIcon(ColocaIcono(getRutaIconoIncorrecto(),30,30,(int) CENTER_ALIGNMENT));
-            lblContraseñaC.setVisible(true);
-            return "El Campo Contraseña es un Campo requerido";
-        } else {
-            lblContraseñaC.setIcon(ColocaIcono(getRutaIconoCorrecto(),30,30,(int) CENTER_ALIGNMENT));
-            lblContraseñaC.setVisible(true);
-            return "";
-        }
-    }
-    private String ValidaBaseDeDatos(boolean Incorrecto){
-        if (txtNombreDeBaseDeDatos.getText().equals("") || Incorrecto){
-            lblBaseC.setIcon(ColocaIcono(getRutaIconoIncorrecto(),30,30,(int) CENTER_ALIGNMENT));
-            lblBaseC.setVisible(true);
-            return "El Campo Base de Datos es un Campo requerido";
-        } else {
-            lblBaseC.setIcon(ColocaIcono(getRutaIconoCorrecto(),30,30,(int) CENTER_ALIGNMENT));
-            lblBaseC.setVisible(true);
-            return "";
-        }
-    }
     private boolean ValidaCamposRequeridos(){
-        List<String> Mensajes = new ArrayList<String>();
-        Mensajes.add(ValidaServidor(false));
-        Mensajes.add(ValidaUsuario(false));
-        Mensajes.add(ValidaContraseña(false));
-        Mensajes.add(ValidaBaseDeDatos(false));
-        List<String> Remueve = new ArrayList<String>();
-        Remueve.add("");
-        Mensajes.removeAll(Remueve);
-        if (!String.join("\n", Mensajes).equals("")){
-            JOptionPane.showMessageDialog(this, String.join("\n", Mensajes),
-                        "Error en Instalación", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
         return true;
     }
     /**
@@ -410,7 +260,6 @@ public class FRMInstalacion extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
             public void run() {
                 new FRMInstalacion().setVisible(Estatus);
             }
@@ -426,20 +275,14 @@ public class FRMInstalacion extends javax.swing.JFrame {
     private Timer Tiempo;
     private static boolean Estatus = true;
     private List<String> Registros;
-    private Clases.ClsManejadorDeArchivos Archivos = null;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBaseExistente;
     private javax.swing.JButton btnCrearBase;
     private javax.swing.JButton btnSiguiente;
-    private javax.swing.JLabel lblBaseC;
     private javax.swing.JLabel lblContraseña;
-    private javax.swing.JLabel lblContraseñaC;
-    private javax.swing.JLabel lblHostC;
     private javax.swing.JLabel lblNombreDeBaseDeDatos;
     private javax.swing.JLabel lblServidor;
     private javax.swing.JLabel lblTextoInformativo;
     private javax.swing.JLabel lblUsuario;
-    private javax.swing.JLabel lblUsuarioC;
     private javax.swing.JProgressBar pgbBaseDeDatos;
     private javax.swing.JPasswordField txtContraseña;
     private javax.swing.JLabel txtLoginTitle;
