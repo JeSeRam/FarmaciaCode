@@ -32,16 +32,10 @@
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="lblContraseña" alignment="0" pref="100" max="32767" attributes="0"/>
-                          <Component id="lblUsuario" alignment="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="lblContraseña2" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblContraseñaC" max="32767" attributes="0"/>
-                          <Component id="lblContraseñaC2" max="32767" attributes="0"/>
-                          <Component id="lblUsuarioC" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lblContraseña" max="32767" attributes="0"/>
+                          <Component id="lblUsuario" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -63,29 +57,20 @@
               <Component id="txtLoginTitle" min="-2" pref="52" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="lblTextoInformativo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                      <Component id="txtUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="lblUsuarioC" alignment="0" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="txtUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblContraseña" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="pwdContraseña" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="lblContraseñaC" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblContraseña" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="pwdContraseña" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                      <Component id="lblContraseña2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="pwdContraseña2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="lblContraseñaC2" alignment="1" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="lblContraseña2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="pwdContraseña2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
               <Component id="btnSiguiente" min="-2" max="-2" attributes="0"/>
@@ -121,9 +106,6 @@
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="Glosario.Glosario.General_getSiguiente()" type="code"/>
         </Property>
-        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor de Mano"/>
-        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSiguienteActionPerformed"/>
@@ -135,21 +117,21 @@
     <Component class="javax.swing.JLabel" name="lblUsuario">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Glosario.Glosario.getLoginUsuario()" type="code"/>
+          <Connection code="Glosario.Glosario.getServidor()" type="code"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblContrase&#xf1;a">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Glosario.Glosario.Usuario.Usuario_Contrase&#xf1;aDeUsuario().toUpperCase()" type="code"/>
+          <Connection code="Glosario.Glosario.getNombreDeBaseDeDatos()" type="code"/>
         </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblContrase&#xf1;a2">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Glosario.Glosario.Usuario.Usuario_Contrase&#xf1;aDeUsuario2().toUpperCase()" type="code"/>
+          <Connection code="Glosario.Glosario.getLoginUsuario()" type="code"/>
         </Property>
       </Properties>
     </Component>
@@ -158,21 +140,6 @@
     <Component class="javax.swing.JPasswordField" name="pwdContrase&#xf1;a">
     </Component>
     <Component class="javax.swing.JPasswordField" name="pwdContrase&#xf1;a2">
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblContrase&#xf1;aC">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="lblContrase&#xf1;aC.setVisible(false);"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblContrase&#xf1;aC2">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="lblContrase&#xf1;aC.setVisible(false);"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblUsuarioC">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="lblContrase&#xf1;aC.setVisible(false);"/>
-      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

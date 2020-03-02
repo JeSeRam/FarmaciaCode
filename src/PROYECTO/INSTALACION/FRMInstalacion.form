@@ -28,19 +28,19 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="pgbBaseDeDatos" max="32767" attributes="0"/>
                   <Component id="txtLoginTitle" alignment="0" pref="380" max="32767" attributes="0"/>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="lblContraseña" alignment="0" pref="111" max="32767" attributes="0"/>
-                          <Component id="lblUsuario" alignment="0" max="32767" attributes="0"/>
-                          <Component id="lblNombreDeBaseDeDatos" alignment="0" max="32767" attributes="0"/>
-                          <Component id="lblServidor" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblBaseC" max="32767" attributes="0"/>
-                          <Component id="lblContraseñaC" max="32767" attributes="0"/>
-                          <Component id="lblUsuarioC" alignment="0" max="32767" attributes="0"/>
-                          <Component id="lblHostC" alignment="0" max="32767" attributes="0"/>
+                          <Component id="btnSiguiente" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnCrearBase" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="lblContraseña" max="32767" attributes="0"/>
+                          <Component id="lblUsuario" max="32767" attributes="0"/>
+                          <Component id="lblNombreDeBaseDeDatos" max="32767" attributes="0"/>
+                          <Component id="lblServidor" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -51,17 +51,6 @@
                       </Group>
                   </Group>
                   <Component id="lblTextoInformativo" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnSiguiente" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="btnCrearBase" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="btnBaseExistente" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -75,39 +64,32 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="lblTextoInformativo" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lblServidor" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtServidor" max="32767" attributes="0"/>
-                  <Component id="lblHostC" alignment="0" max="32767" attributes="0"/>
+                  <Component id="txtServidor" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lblNombreDeBaseDeDatos" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtNombreDeBaseDeDatos" max="32767" attributes="0"/>
-                  <Component id="lblBaseC" alignment="0" max="32767" attributes="0"/>
+                  <Component id="txtNombreDeBaseDeDatos" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lblUsuario" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtUsuario" max="32767" attributes="0"/>
-                  <Component id="lblUsuarioC" alignment="0" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="lblContraseña" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtContraseña" max="32767" attributes="0"/>
-                  <Component id="lblContraseñaC" alignment="0" max="32767" attributes="0"/>
+                  <Component id="txtUsuario" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnCrearBase" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnBaseExistente" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lblContraseña" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtContraseña" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="btnCrearBase" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="pgbBaseDeDatos" min="-2" pref="29" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="btnSiguiente" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="46" max="32767" attributes="0"/>
+              <EmptySpace pref="49" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -144,9 +126,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="Glosario.Glosario.General_getSiguiente()" type="code"/>
-        </Property>
-        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor de Mano"/>
         </Property>
       </Properties>
       <Events>
@@ -189,9 +168,6 @@
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="Glosario.Glosario.getCrearBaseDeDatos()" type="code"/>
         </Property>
-        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor de Mano"/>
-        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCrearBaseActionPerformed"/>
@@ -204,42 +180,6 @@
     <Component class="javax.swing.JTextField" name="txtUsuario">
     </Component>
     <Component class="javax.swing.JPasswordField" name="txtContrase&#xf1;a">
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblContrase&#xf1;aC">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="lblContrase&#xf1;aC.setVisible(false);"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblBaseC">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="lblContrase&#xf1;aC.setVisible(false);"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblUsuarioC">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="lblContrase&#xf1;aC.setVisible(false);"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblHostC">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="lblContrase&#xf1;aC.setVisible(false);"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JButton" name="btnBaseExistente">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="cc" red="0" type="rgb"/>
-        </Property>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Glosario.Glosario.getBaseDeDatosExistente()" type="code"/>
-        </Property>
-        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Cursor de Mano"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBaseExistenteActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>
